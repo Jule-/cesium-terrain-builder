@@ -13,14 +13,26 @@ if(NOT ZLIB_FOUND)
 endif()
 include_directories(${ZLIB_INCLUDE_DIRS})
 
+# We need boost
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost 1.57.0 COMPONENTS system filesystem regex)
+if(NOT Boost_FOUND)
+  message(FATAL_ERROR "The boost library cannot be found on the sytem")
+endif()
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
+
 add_library(ctb SHARED
   GDALTile.cpp
   GDALTiler.cpp
+  TerrainDataset.cpp
   TerrainTiler.cpp
   TerrainTile.cpp
   GlobalMercator.cpp
   GlobalGeodetic.cpp)
-target_link_libraries(ctb ${GDAL_LIBRARIES} ${ZLIB_LIBRARIES})
+target_link_libraries(ctb ${GDAL_LIBRARIES} ${ZLIB_LIBRARIES} ${Boost_LIBRARIES})
 
 # Install libctb
 set(HEADERS
@@ -38,6 +50,7 @@ set(HEADERS
   TerrainIterator.hpp
   TerrainTile.hpp
   TerrainTiler.hpp
+  TerrainDataset.hpp
   Tile.hpp
   TileCoordinate.hpp
   TilerIterator.hpp
@@ -46,3 +59,9 @@ install(FILES ${HEADERS} DESTINATION include/ctb)
 install(FILES ctb.hpp DESTINATION include)
 
 install(TARGETS ctb DESTINATION lib)
+
+if(MSVC)
+  # On Windows in order to use CTB without modifying PATH
+  # we need to keep dll collocated.
+  install(TARGETS ctb DESTINATION bin)
+endif()
