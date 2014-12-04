@@ -57,6 +57,9 @@ install(FILES ${PROJECT_BINARY_DIR}/config.hpp DESTINATION include/ctb)
 if(NOT MSVC)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra --pedantic")
   #set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra --pedantic")
+else()
+  # /Wall is really too verbose set /W4 instead
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /W4")
 endif()
 
 # We need GDAL
