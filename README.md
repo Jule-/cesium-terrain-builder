@@ -101,7 +101,7 @@ Options:
   [`GDAL_CACHEMAX`](http://trac.osgeo.org/gdal/wiki/ConfigOptions#GDAL_CACHEMAX)
   environment variable should be set to a relatively high value, in conjunction
   with the warp memory, if required (see next recommendation).
-  
+
 * If warping the source dataset then set the warp memory to a relatively high
   value.  The correct value is system dependent but try starting your benchmarks
   from a value where the combined value of `GDAL_CACHEMAX` and the warp memory
@@ -121,6 +121,27 @@ Options:
   process in order to create tiles in a GDAL DEM format as an intermediate step.
   VRT representations of these intermediate tilesets can then be used to create
   the final terrain tile output.
+
+### `ctb-patch`
+
+This allows patching merged Cesium terrain children from multiple generations.
+
+    ctb-patch --input-directory ./merged-terrain --output-directory ./merged-terrain-patched
+
+```
+Usage: ctb-patch [options] (--auto|--input-directory <directory> --output-directory <directory>)
+
+Options:
+
+  -V, --version                 output program version
+  -h, --help                    output help information
+  -a, --auto                    use '.' as input directory and './patched' as output directory
+  -i, --input-directory <directory> the terrain root directory to convert
+  -o, --output-directory <directory> the output root directory to create
+  -s, --simulate                simulate patching, no file will be written
+  -v, --verbose                 output patched tiles
+  -q, --quiet                   no output
+```
 
 ### `ctb-info`
 
@@ -215,8 +236,8 @@ The software has primarily been developed and deployed on a Linux OS.  Porting
 it to other systems should be relatively painless as the library dependencies
 have been ported to numerous systems and the code itself is standard C++11.  In
 fact it has been reported as compiling on Windows using Visual Studio 2010 with
-minor tweaks. It is reported as not compiling on Mac OS X Mavericks using clang: 
-this issue is tracked 
+minor tweaks. It is reported as not compiling on Mac OS X Mavericks using clang:
+this issue is tracked
 [here](https://github.com/geo-data/cesium-terrain-builder/issues/3).
 
 ## Requirements
