@@ -136,8 +136,8 @@ public:
   inline PixelPoint
   crsToPixels(const CRSPoint &coord, i_zoom zoom) const {
     double res = resolution(zoom);
-    i_pixel px = (mXOriginShift + coord.x) / res,
-      py = (mYOriginShift + coord.y) / res;
+    i_pixel px = (i_pixel)((mXOriginShift + coord.x) / res),
+      py = (i_pixel)((mYOriginShift + coord.y) / res);
 
     return PixelPoint(px, py);
   }
